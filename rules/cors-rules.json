@@ -1,0 +1,86 @@
+[
+    {
+        "id": 9001,
+        "priority": 2,
+        "action": {
+            "type": "modifyHeaders",
+            "responseHeaders": [
+                {
+                    "header": "Access-Control-Allow-Origin",
+                    "operation": "set",
+                    "value": "*"
+                },
+                {
+                    "header": "Access-Control-Allow-Methods",
+                    "operation": "set",
+                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                },
+                {
+                    "header": "Access-Control-Allow-Headers",
+                    "operation": "set",
+                    "value": "*"
+                },
+                {
+                    "header": "Content-Security-Policy",
+                    "operation": "remove"
+                },
+                {
+                    "header": "X-Frame-Options",
+                    "operation": "remove"
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "||staging-occ.onead.tw/gos/vast/",
+            "resourceTypes": [
+                "xmlhttprequest",
+                "other",
+                "script",
+                "media"
+            ]
+        }
+    },
+    {
+        "id": 9002,
+        "priority": 2,
+        "action": {
+            "type": "modifyHeaders",
+            "responseHeaders": [
+                {
+                    "header": "Access-Control-Allow-Origin",
+                    "operation": "set",
+                    "value": "*"
+                },
+                {
+                    "header": "Access-Control-Allow-Methods",
+                    "operation": "set",
+                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                },
+                {
+                    "header": "Access-Control-Allow-Headers",
+                    "operation": "set",
+                    "value": "*"
+                },
+                {
+                    "header": "Content-Security-Policy",
+                    "operation": "remove"
+                },
+                {
+                    "header": "X-Frame-Options",
+                    "operation": "remove"
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "||localhost:8888/",
+            "resourceTypes": [
+                "script",
+                "xmlhttprequest",
+                "sub_frame",
+                "media",
+                "image",
+                "other"
+            ]
+        }
+    }
+]

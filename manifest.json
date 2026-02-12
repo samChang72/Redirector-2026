@@ -1,0 +1,99 @@
+{
+  "manifest_version": 3,
+  "name": "Redirector",
+  "description": "Automatically redirect content based on user-defined rules.",
+  "version": "4",
+  "icons": {
+    "16": "images/icon-light-theme-16.png",
+    "19": "images/icon-light-theme-19.png",
+    "32": "images/icon-light-theme-32.png",
+    "38": "images/icon-light-theme-38.png",
+    "48": "images/icon-light-theme-48.png",
+    "64": "images/icon-light-theme-64.png",
+    "128": "images/icon-light-theme-128.png"
+  },
+  "permissions": [
+    "webRequest",
+    "webNavigation",
+    "storage",
+    "tabs",
+    "notifications",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "cors_rules",
+        "enabled": true,
+        "path": "rules/cors-rules.json"
+      }
+    ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "redirector@einaregilsson.com"
+    }
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "options_ui": {
+    "page": "popup.html"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/icon-light-theme-16.png",
+      "19": "images/icon-light-theme-19.png",
+      "32": "images/icon-light-theme-32.png",
+      "38": "images/icon-light-theme-38.png",
+      "48": "images/icon-light-theme-48.png",
+      "64": "images/icon-light-theme-64.png",
+      "128": "images/icon-light-theme-128.png"
+    },
+    "default_title": "Redirector",
+    "default_popup": "popup.html",
+    "theme_icons": [
+      {
+        "dark": "images/icon-light-theme-16.png",
+        "light": "images/icon-dark-theme-16.png",
+        "size": 16
+      },
+      {
+        "dark": "images/icon-light-theme-19.png",
+        "light": "images/icon-dark-theme-19.png",
+        "size": 19
+      },
+      {
+        "dark": "images/icon-light-theme-32.png",
+        "light": "images/icon-dark-theme-32.png",
+        "size": 32
+      },
+      {
+        "dark": "images/icon-light-theme-38.png",
+        "light": "images/icon-dark-theme-38.png",
+        "size": 38
+      },
+      {
+        "dark": "images/icon-light-theme-48.png",
+        "light": "images/icon-dark-theme-48.png",
+        "size": 48
+      },
+      {
+        "dark": "images/icon-light-theme-64.png",
+        "light": "images/icon-dark-theme-64.png",
+        "size": 64
+      },
+      {
+        "dark": "images/icon-light-theme-128.png",
+        "light": "images/icon-dark-theme-128.png",
+        "size": 128
+      }
+    ]
+  },
+  "minimum_chrome_version": "88"
+}
