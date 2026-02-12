@@ -1,144 +1,165 @@
-## Description
-Web browser extension (Firefox, Vivaldi, Chrome, Opera, Edge) to redirect URLs based on regex or wildcard patterns.
+## 簡介
 
-## Tribute
-In loving memory of Einar Egilsson, who gave us Redirector and selflessly nurtured it for many years.  We miss you Einar, and will always remember your kindness and generosity.
+Redirector 是一款瀏覽器擴充功能（支援 Firefox、Vivaldi、Chrome、Opera、Edge），可根據使用者自訂的正規表達式或萬用字元規則自動重新導向網址。
 
-## Download Links
+## 紀念
+
+謹以此專案紀念 Einar Egilsson，他創造了 Redirector 並無私地維護了許多年。我們懷念你的善良與慷慨。
+
+## 下載連結
+
 * [Firefox](https://addons.mozilla.org/firefox/addon/redirector/)
-* [Google Chrome and Vivaldi](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
-<!--
-Opera extension is no longer present (as of 2023/01/16)
-* [Opera](https://addons.opera.com/extensions/details/redirector-2/)
--->
+* [Google Chrome / Vivaldi](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
 
-## Manifest V3 Migration
+## Manifest V3 遷移
 
-**Version 4.0.0** migrates Redirector from Manifest V2 to Manifest V3 for Chrome compatibility.
+**4.0.0 版**已將 Redirector 從 Manifest V2 遷移至 Manifest V3，以維持 Chrome 相容性。
 
-### What Changed
+### 主要變更
 
-- **Chrome 88+ Required**: Chrome/Edge now require version 88 or higher
-- **Service Worker**: Background page migrated to service worker (event-driven)
-- **Automatic Migration**: Upgrading from v3.5.4 (MV2) creates automatic backup before migration
-- **Zero Data Loss**: All redirect rules, settings, and configurations preserved
-- **Rollback Capability**: Can export from v4.0.0 and import into v3.5.4 if needed
+- **Chrome 88+ 必要**：Chrome/Edge 需要 88 以上版本
+- **Service Worker**：背景頁面已遷移為 Service Worker（事件驅動）
+- **自動遷移**：從 v3.5.4（MV2）升級時，會在遷移前自動建立備份
+- **零資料損失**：所有重新導向規則、設定與組態皆完整保留
+- **復原能力**：可從 v4.0.0 匯出並匯入 v3.5.4
 
-### Browser Support
+### 瀏覽器支援
 
-- **Chrome/Edge/Opera/Vivaldi**: Version 4.0.0+ (Manifest V3)
-- **Firefox**: Version 3.5.x (Manifest V2) - maintained on separate branch
+| 瀏覽器 | 版本 | Manifest |
+|--------|------|----------|
+| Chrome / Edge / Opera / Vivaldi | 4.0.0+（需 88+） | V3 |
+| Firefox | 3.5.x | V2（獨立分支維護） |
 
-### What Stayed the Same
+### 功能保持不變
 
-✅ All redirect patterns work identically (regex, wildcards, capture groups)  
-✅ URL processing (decode, encode, base64)  
-✅ Import/export functionality  
-✅ Browser action icons and badges  
-✅ Desktop notifications  
-✅ Console logging  
-✅ HistoryState redirects (YouTube Shorts, etc.)
+- 所有重新導向模式皆運作一致（正規表達式、萬用字元、擷取群組）
+- URL 處理（decode、encode、base64）
+- 匯入/匯出功能
+- 瀏覽器按鈕圖示與徽章
+- 桌面通知
+- 主控台日誌
+- HistoryState 重新導向（YouTube Shorts 等）
 
-### Performance
+### 效能
 
-- **Warm redirects**: ~5-10ms (identical to v3.5.4)
-- **Cold start**: ~50-100ms after service worker wake (once every ~30 seconds)
-- **Memory**: ≤20% increase vs v3.5.4
+| 指標 | 數值 |
+|------|------|
+| 暖啟動重新導向 | ~5-10ms（與 v3.5.4 相同） |
+| 冷啟動 | ~50-100ms（Service Worker 喚醒後） |
+| 記憶體使用量 | 較 v3.5.4 增加 ≤20% |
 
-For technical details, see [CHANGELOG.md](CHANGELOG.md) and [DECISIONS.md](DECISIONS.md).
+詳細技術資訊請參閱 [CHANGELOG.md](CHANGELOG.md) 與 [DECISIONS.md](DECISIONS.md)。
 
+## 使用範例
 
-## Examples
-### De-mobilizer
-- Example URL: `https://en.m.wikipedia.org/`
-- Include pattern: `^(https?://)([a-z0-9-]*\.)m(?:obile)?\.(.*)`
-- Redirect to: `$1$2$3`
-- Pattern type: Regular Expression
-- Description: Always show the desktop version of websites
+### 去行動版（De-mobilizer）
 
-### AMP redirect
-- Example URL: `https://www.google.com/amp/www.example.com/amp/document`
-- Include pattern: `^(?:https?://)www.(?:google|bing).com/amp/(?:s/)?(.*)`
-- Redirect to: `https://$1`
-- Pattern type: Regular Expression
-- Description: AMP is bad: <https://80x24.net/post/the-problem-with-amp/>
+將行動版網站重新導向至桌面版。
 
-### Doubleclick escaper
-- Example URL: `https://ad.doubleclick.net/ddm/trackclk/N135005.2681608PRIVATENETWORK/B20244?https://www.example.com`
-- Include pattern: `^(?:https?://)ad.doubleclick.net/.*\?(http?s://.*)`
-- Redirect to: `$1`
-- Pattern type: Regular Expression
-- Description: Remove doubleclick link tracking / fix problems with doubleclick host-based blocking
+- 範例網址：`https://en.m.wikipedia.org/`
+- 包含模式：`^(https?://)([a-z0-9-]*\.)m(?:obile)?\.(.*)`
+- 重新導向至：`$1$2$3`
+- 模式類型：正規表達式
 
-### YouTube Shorts to YouTube
-- Example URL: `https://www.youtube.com/shorts/video-id`
-- Include pattern: `^(?:https?://)(?:www.)?youtube.com/shorts/([a-zA-Z0-9_-]+)(.*)`
-- Redirect to: `https://www.youtube.com/watch?v=$1$2`
-- Pattern type: Regular Expression
-- Description: Redirect YouTube Shorts to regular YouTube
-- Advanced option: enable `historyState`
+### AMP 重新導向
 
-### Fun with !bangs
-What are bangs?: <https://duckduckgo.com/bangs>
+繞過 Google/Bing 的 AMP 頁面，直接前往原始網站。
 
-#### Use DuckDuckGo.com !bangs on Google
-- Example URL: `https://www.google.com/search?&ei=-FvkXcOVMo6RRwW5p5DgBg&q=asdfasdf%21+sadfas&oq=%21asdfasdf+sadfas&gs_l=asdfsadfafsgaf`
-- Include pattern: `^(?:https?://)(?:www.)google\.(?:com|au|de|co\.uk)/search\?(?:.*)?(?:oq|q)=([^\&]*\+)?((?:%21|!)[^\&]*)`
-- Redirect to: `https://duckduckgo.com/?q=$1$2`
-- Pattern type: Regular Expression
-- Description: Redirect any Google query with a !bang to DDG
+- 範例網址：`https://www.google.com/amp/www.example.com/amp/document`
+- 包含模式：`^(?:https?://)www.(?:google|bing).com/amp/(?:s/)?(.*)`
+- 重新導向至：`https://$1`
+- 模式類型：正規表達式
 
-### Custom DuckDuckGo.com !bangs
+### Doubleclick 追蹤移除
 
-#### DDG !example Base
-- Example URL: `https://duckduckgo.com/?q=!`__example__`&get=other`
-- Include pattern: `^(?:https?://)(?:.*\.)?duckduckgo.com/\?q=(?:%21|!)`__example__`(?=[^\+]|$)(?=\W|$)`
-- Redirect to: `https://example.com/`
-- Pattern type: Regular Expression
-- Description: Redirect to the base site when !bang is the only search parameter
+移除 Doubleclick 連結追蹤。
 
-#### DDG !example Search
-- Example URL: `https://duckduckgo.com/?q=searchterm+!`__example__`+searchterm2&get=other`
-- Include pattern: `^(?:https?://)(?:.*\.)?duckduckgo.com/\?q=(.*\+)?(?:(?:%21|!)`__example__`)(?:\+([^\&\?\#]*))?(?:\W|$)`
-- Redirect to: `https://example.com/?query=$1$2`
-- Pattern type: Regular Expression
-- Description: Redirect to custom site search
+- 範例網址：`https://ad.doubleclick.net/ddm/trackclk/N135005.2681608PRIVATENETWORK/B20244?https://www.example.com`
+- 包含模式：`^(?:https?://)ad.doubleclick.net/.*\?(http?s://.*)`
+- 重新導向至：`$1`
+- 模式類型：正規表達式
 
-#### DDG !ghh git-history
-- Example URL: `https://duckduckgo.com/?q=!ghh+https%3A%2F%2Fgithub.com%2Fbabel%2Fbabel%2Fblob%2Fmaster%2Fpackages%2Fbabel-core%2FREADME.md&adfasfasd`
-- Include pattern: `^(?:https?://)duckduckgo.com/\?q=(?:(?:%21|!)ghh\+)(?:.*)(github|gitlab|bitbucket)(?:\.org|\.com)(.*?(?=\&))`
-- Redirect to: `https://$1.githistory.xyz$2`
-- Pattern type: Regular Expression
-- Description: Create new !ghh bang that redirects to <https://githistory.xyz>
-- Advanced:
-    - Process matches: URL decode
-    
-### Fast DuckDuckGo.com !bangs
+### YouTube Shorts 轉一般影片
 
-Go directly to frequently used DuckDuckGo bangs to avoid intermediary network requests.
+將 YouTube Shorts 重新導向至標準播放頁面。
 
-- Example URL: `https://duckduckgo.com/?q=foo+bar+%21google+test+bar`
-- Include pattern: `^https://duckduckgo\.com/\?q=(.*)\+(?:%21|!)google\b\+(.*?)(?:&|$)`
-- Redirect to: `https://google.com/search?hl=en&q=$1+$2`
-- Pattern type: Regular Expression
-- Description: DuckDuckGo → Google !bang shortcut (prefix AND suffix)
-- Pattern Description: Avoid extraneous + in URL with two separate patterns  
-###
-  
-- Example URL: `https://duckduckgo.com/?q=foo+bar+%21google`
-- Include pattern: `^https://duckduckgo\.com/\?q=(.*?)\+?(?:%21|!)google\b\+?(.*?)(?:&|$)`
-- Redirect to: `https://google.com/search?hl=en&q=$1$2`
-- Pattern type: Regular Expression
-- Description: DuckDuckGo → Google !bang shortcut (prefix OR suffix)
-- Pattern Description: Avoid extraneous + in URL with two separate patterns
+- 範例網址：`https://www.youtube.com/shorts/video-id`
+- 包含模式：`^(?:https?://)(?:www.)?youtube.com/shorts/([a-zA-Z0-9_-]+)(.*)`
+- 重新導向至：`https://www.youtube.com/watch?v=$1$2`
+- 模式類型：正規表達式
+- 進階選項：啟用 `historyState`
 
-## Dark Theme
-If you are a Firefox user and use a dark theme, you can add these lines to your `userChrome.css` file to make Redirector's extension button more visible:
+### !bangs 玩法
+
+什麼是 bangs？請參閱 <https://duckduckgo.com/bangs>
+
+#### 在 Google 上使用 DuckDuckGo !bangs
+
+- 範例網址：`https://www.google.com/search?&q=asdfasdf%21+sadfas`
+- 包含模式：`^(?:https?://)(?:www.)google\.(?:com|au|de|co\.uk)/search\?(?:.*)?(?:oq|q)=([^\&]*\+)?((?:%21|!)[^\&]*)`
+- 重新導向至：`https://duckduckgo.com/?q=$1$2`
+- 模式類型：正規表達式
+
+#### 自訂 DuckDuckGo !bangs
+
+**!example 基礎版**（僅有 bang 時重新導向至基礎網站）：
+
+- 範例網址：`https://duckduckgo.com/?q=!example&get=other`
+- 包含模式：`^(?:https?://)(?:.*\.)?duckduckgo.com/\?q=(?:%21|!)example(?=[^\+]|$)(?=\W|$)`
+- 重新導向至：`https://example.com/`
+- 模式類型：正規表達式
+
+**!example 搜尋版**（附帶搜尋字詞時重新導向至自訂搜尋）：
+
+- 範例網址：`https://duckduckgo.com/?q=searchterm+!example+searchterm2&get=other`
+- 包含模式：`^(?:https?://)(?:.*\.)?duckduckgo.com/\?q=(.*\+)?(?:(?:%21|!)example)(?:\+([^\&\?\#]*))?(?:\W|$)`
+- 重新導向至：`https://example.com/?query=$1$2`
+- 模式類型：正規表達式
+
+### 快速 DuckDuckGo !bangs
+
+直接前往常用的 DuckDuckGo bang 目標，避免中間的網路請求。
+
+**前後綴皆有搜尋字詞**：
+
+- 範例網址：`https://duckduckgo.com/?q=foo+bar+%21google+test+bar`
+- 包含模式：`^https://duckduckgo\.com/\?q=(.*)\+(?:%21|!)google\b\+(.*?)(?:&|$)`
+- 重新導向至：`https://google.com/search?hl=en&q=$1+$2`
+- 模式類型：正規表達式
+
+**僅前綴或後綴有搜尋字詞**：
+
+- 範例網址：`https://duckduckgo.com/?q=foo+bar+%21google`
+- 包含模式：`^https://duckduckgo\.com/\?q=(.*?)\+?(?:%21|!)google\b\+?(.*?)(?:&|$)`
+- 重新導向至：`https://google.com/search?hl=en&q=$1$2`
+- 模式類型：正規表達式
+
+## Firefox 深色主題
+
+如果你使用 Firefox 深色主題，可以在 `userChrome.css` 中加入以下內容，讓 Redirector 的按鈕更清晰可見：
 
 ```css
-/* Redirector button for dark Firefox themes */
+/* Redirector 按鈕 - Firefox 深色主題適配 */
 toolbarbutton#toggle-button--redirectoreinaregilssoncom-redirector[image*="active"] { filter: invert(1) brightness(6); }
 toolbarbutton#toggle-button--redirectoreinaregilssoncom-redirector[image*="disabled"] { filter: invert(1) brightness(2.5); }
 ```
 
-If you don't know what the `userChrome.css` file is, or how to edit it, please look it up on a Firefox forum instead of asking about it in this repository. Thanks!
+如果不了解 `userChrome.css` 的用法，請至 Firefox 相關論壇查詢。
+
+## 專案結構
+
+```
+src/
+  js/           # JavaScript 原始碼
+  css/          # 樣式表
+  images/       # 圖示（亮色/暗色主題）
+  rules/        # declarativeNetRequest 規則
+tests/          # 基準測試與跨瀏覽器測試
+specs/          # 功能規格文件
+```
+
+## 授權條款
+
+MIT License - Copyright (c) 2016 Einar Egilsson
+
+詳見 [LICENSE](LICENSE)。
